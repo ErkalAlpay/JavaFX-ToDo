@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.w3c.dom.events.MouseEvent;
 
 import java.sql.*;
 
@@ -19,9 +20,10 @@ public class HelloApplication extends Application {
         stage.show();
     }
 
+    void signUp(MouseEvent event)throws IOException{}
+
     public static void main(String[] args) {
 
-        DataAccess dataAccess = DataAccess.getInstance();
 
         launch();
     }

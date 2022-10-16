@@ -27,6 +27,7 @@ public class User {
     public int getId() {
         return id;
     }
+
     public ArrayList<User> getKullaniciListesi() {
         return kullaniciListesi;
     }

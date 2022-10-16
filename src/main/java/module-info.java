@@ -6,4 +6,6 @@ module com.example.loginscreen4 {
 
     opens com.example.loginscreen4 to javafx.fxml;
     exports com.example.loginscreen4;
+    exports controller;
+    opens controller to javafx.fxml;
 }
