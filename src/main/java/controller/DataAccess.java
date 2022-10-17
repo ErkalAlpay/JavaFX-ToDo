@@ -63,12 +63,13 @@ public class DataAccess {
     //private ArrayList<String> usernameList = new ArrayList<>();
     //private ArrayList<String> passwordList = new ArrayList<>();
 
-    public boolean checkDatabaseForRegisterUsername(TextField registerUsername) throws SQLException {
+    public boolean checkDatabaseForRegisterUsername(String registerUsername) throws SQLException {
 
         //Önce database üzerinde aynı isimde bir kayıt var mı yok mu kontrol edilecek
         //Eğer yoksa kayıt yapılacak, varsa geriye uyarı döndürecek
 
-
+        //select * from * (tablonun ismi ) where (aranacak column ismi) = '"aranacakDegisken"' o tablodaki o columndaki değerler ile karşılaştırmasını yapar
+       //(Yeni komut) ResultSet rs = statement.executeQuery("select * from userss where username = '"+registerUsername+"'  ");
         ResultSet rs = statement.executeQuery("select * from userss  ");
         ArrayList<String> usernameList = new ArrayList<>();
 

@@ -49,7 +49,7 @@ public class SignUpController implements Initializable {
     protected void onRegisterButon() throws SQLException {
         try {
 
-            if (DataAccess.getInstance().checkDatabaseForRegisterUsername(this.registerUserName)) {
+            if (DataAccess.getInstance().checkDatabaseForRegisterUsername(this.registerUserName.getText())) {
                 System.out.println("Aynı isimde username bulunmakta");
 
             }else {
