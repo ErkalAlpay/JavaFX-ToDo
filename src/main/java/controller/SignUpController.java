@@ -4,8 +4,10 @@ import com.example.loginscreen4.User;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -18,6 +20,10 @@ public class SignUpController implements Initializable {
     }
 
 
+
+    @FXML
+    private DialogPane dio;
+
     @FXML
     private Button registerButonu;
 
@@ -28,7 +34,7 @@ public class SignUpController implements Initializable {
     private PasswordField registerPassword2;
 
     @FXML
-    private TextField registerUserName;
+    private TextField registerEmail;
 
     public Button getRegisterButonu() {
         return registerButonu;
@@ -45,28 +51,19 @@ public class SignUpController implements Initializable {
     }*/
 
 
+
     @FXML
     protected void onRegisterButon() throws SQLException {
-        try {
 
-            if (DataAccess.getInstance().checkDatabaseForRegisterUsername(this.registerUserName.getText())) {
-                System.out.println("Aynı isimde username bulunmakta");
+        User user = new User();
+        user.setEmail(this.registerEmail.getText());
+        user.setPassword(this.registerPassword.getText());
 
-            }else {
-                User user = new User(this.registerUserName.getText(), this.registerPassword.getText());
-                DataAccess.getInstance().addUser(user);
-                System.out.println("Başarıyla kayıt olundu");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        DataAccess.getInstance().saveUser(user);
 
-        /* (checkPassword()==true && DataAccess.getInstance().checkDatabase(this.registerPassword)==true){
 
-            User user = new User(this.registerUserName.getText(), this.registerPassword.getText());
-            DataAccess.getInstance().addUser(user);
 
-        }else checkPassword();*/
+
 
     }
 }

@@ -1,20 +1,15 @@
 package controller;
 
-import com.example.loginscreen4.HelloApplication;
-import com.example.loginscreen4.User;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
 
-public class HelloController {
+public class LoginController {
+
+
 
 
     @FXML
@@ -35,18 +30,18 @@ public class HelloController {
     private Button loginRegisterButton;
 
     @FXML
-    protected void onHelloButtonClick() throws SQLException {
+    protected void loginButtonAction() throws SQLException, IOException {
 
-        if (DataAccess.getInstance().checkDataBaseForLogin(kullaniciAdi,passwordField)){
-            loginButonu.setText("Logged in Succesfully");
-        }else System.out.println("Kullanıcı adı veya şifre hatalı");
-
+        if (DataAccess.getInstance().checkDataBaseForLogin(kullaniciAdi.getText(), passwordField.getText())) {
+            SceneController asd = new SceneController();
+            asd.switchToToDoScene();
+        } else System.out.println("Kullanıcı adı veya şifre hatalı");
 
 
     }
+
     @FXML
     protected void loginResgisterButtonAction() throws IOException {
-
         SceneController asd = new SceneController();
         asd.switchToRegisterScene();
 
@@ -59,16 +54,10 @@ public class HelloController {
         stage.show(); */
 
 
-
-
-
-
-
-
-        }
-
-
     }
+
+
+}
 
 
 

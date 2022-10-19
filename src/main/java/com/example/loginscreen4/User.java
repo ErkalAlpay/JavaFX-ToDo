@@ -1,34 +1,16 @@
 package com.example.loginscreen4;
 
-import javafx.scene.control.TextField;
+import lombok.Data;
 
 import java.util.ArrayList;
-
+@Data
 public class User {
-    private String userName;
+
+
+    private String email;
     private String password;
     private int id;
 
-    private ArrayList<User> kullaniciListesi = new ArrayList<User>();
 
-    public User(String userName, String password) {
-        this.userName = userName;
-        this.password = password;
-    }
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public ArrayList<User> getKullaniciListesi() {
-        return kullaniciListesi;
-    }
 }
