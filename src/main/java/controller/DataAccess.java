@@ -1,5 +1,6 @@
 package controller;
 
+import com.example.loginscreen4.ToDo;
 import com.example.loginscreen4.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -8,6 +9,7 @@ import java.sql.*;
 public class DataAccess {
 
     private static DataAccess instance;
+    private static User loginYapmisUser;
 
 
 
@@ -51,6 +53,17 @@ public class DataAccess {
 
     }
 
+    private void addTodo(ToDo todo) throws SQLException{
+        String sql = "insert into todo (todo, userid) values ('"+todo.getTodo()+"','"+todo.getUser_id()+"')";
+        statement.addBatch(sql);
+        statement.executeBatch();
+    }
+
+    public void saveTodo(ToDo todo) throws SQLException{
+        todo.setUser_id(loginYapmisUser.getId());
+        addTodo(todo);
+    }
+
     public void saveUser(User user) throws SQLException {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         addUser(user);
@@ -64,9 +77,7 @@ public class DataAccess {
         if (dbUser == null || !passwordEncoder.matches(user.getPassword(), dbUser.getPassword())){
             throw new Exception("Kullanıcı adı veya şifre bulunamadı");
         }
-
-
-
+    loginYapmisUser = dbUser;
     }
 
     private User getUserByEmail(String email) throws SQLException {
