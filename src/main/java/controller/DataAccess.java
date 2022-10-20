@@ -5,6 +5,7 @@ import com.example.loginscreen4.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class DataAccess {
 
@@ -91,10 +92,25 @@ public class DataAccess {
             user.setId(sonuc.getInt("id"));
             return user;
         } return null;
-
-
-
     }
+     private ArrayList<ToDo> getDataBaseTodoByUserId(int userId) throws SQLException {
+        String sql = "select * from todo where userid = '"+userId+"'";
+        ResultSet sonuc = statement.executeQuery(sql);
+        ArrayList<ToDo> dbToDoList = new ArrayList<>();
+        while(sonuc.next()){
+            ToDo todo = new ToDo();
+            todo.setTodo(sonuc.getString("todo"));
+            todo.setCompleted(sonuc.getBoolean("isCompleted"));
+            todo.setId(sonuc.getInt("id"));
+            todo.setUser_id(sonuc.getInt("userid"));
+            dbToDoList.add(todo);
+        }return dbToDoList;
+
+     }
+
+     public ArrayList<ToDo> getToDoList() throws SQLException {
+       return getDataBaseTodoByUserId(loginYapmisUser.getId());
+     }
 
 }
 
