@@ -12,7 +12,7 @@ import java.io.IOException;
 public class SceneController {
 
     LoginController loginController = new LoginController();
-    SignUpController signUpController = new SignUpController();
+    RegisterController registerController = new RegisterController();
     private Stage stage;
     private Scene scene;
     private Parent root;

@@ -54,6 +54,34 @@ public class DataAccess {
     public void saveUser(User user) throws SQLException {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         addUser(user);
+        //JavaMailSender.mailSender(user.getEmail());
+
+    }
+
+    // email = saiddemir  şifre = saiddemir
+    public void login(User user) throws Exception {
+        User dbUser = getUserByEmail(user.getEmail());
+        if (dbUser == null || !passwordEncoder.matches(user.getPassword(), dbUser.getPassword())){
+            throw new Exception("Kullanıcı adı veya şifre bulunamadı");
+        }
+
+
+
+    }
+
+    private User getUserByEmail(String email) throws SQLException {
+        String sql = "select * from users where email = '"+email+"' ";
+        ResultSet sonuc = statement.executeQuery(sql);
+
+        if (sonuc.next()){
+            User user = new User();
+            user.setEmail(sonuc.getString("email"));
+            user.setPassword(sonuc.getString("password"));
+            user.setId(sonuc.getInt("id"));
+            return user;
+        } return null;
+
+
 
     }
 

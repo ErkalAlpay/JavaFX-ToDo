@@ -3,22 +3,16 @@ package controller;
 import com.example.loginscreen4.User;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.DialogPane;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import javafx.scene.control.*;
 
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-public class SignUpController implements Initializable {
+public class RegisterController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
     }
-
 
 
     @FXML
@@ -51,18 +45,19 @@ public class SignUpController implements Initializable {
     }*/
 
 
-
     @FXML
-    protected void onRegisterButon() throws SQLException {
-
-        User user = new User();
-        user.setEmail(this.registerEmail.getText());
-        user.setPassword(this.registerPassword.getText());
-
-        DataAccess.getInstance().saveUser(user);
-
-
-
+    protected void onRegisterButon() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        try {
+            User user = new User();
+            user.setEmail(this.registerEmail.getText());
+            user.setPassword(this.registerPassword.getText());
+            DataAccess.getInstance().saveUser(user);
+        } catch (Exception e) {
+            alert.setTitle("Hata");
+            alert.setContentText("Böyle bir kullanıcı zaten var!");
+            alert.show();
+        }
 
 
     }

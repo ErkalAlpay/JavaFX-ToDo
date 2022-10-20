@@ -1,6 +1,9 @@
 package controller;
 
+import com.example.loginscreen4.User;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
@@ -8,10 +11,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 public class LoginController {
-
-
-
-
     @FXML
     private TextField kullaniciAdi;
 
@@ -29,31 +28,29 @@ public class LoginController {
     @FXML
     private Button loginRegisterButton;
 
-    @FXML
-    protected void loginButtonAction() throws SQLException, IOException {
 
-        if (DataAccess.getInstance().checkDataBaseForLogin(kullaniciAdi.getText(), passwordField.getText())) {
+    @FXML
+    protected void loginButtonAction() throws Exception {
+
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        try {
+            User user = new User();
+            user.setEmail(kullaniciAdi.getText());
+            user.setPassword(passwordField.getText());
+            DataAccess.getInstance().login(user);
             SceneController asd = new SceneController();
             asd.switchToToDoScene();
-        } else System.out.println("Kullanıcı adı veya şifre hatalı");
-
-
+        } catch (Exception e) {
+            alert.setTitle("Hata");
+            alert.setContentText(e.getMessage());
+            alert.show();
+        }
     }
 
     @FXML
     protected void loginResgisterButtonAction() throws IOException {
         SceneController asd = new SceneController();
         asd.switchToRegisterScene();
-
-        /*
-        FXMLLoader root = new FXMLLoader(HelloApplication.class.getResource("sign-up.fxml"));
-        Scene scene = new Scene(root.load());
-        Stage stage = new Stage();
-        stage.setTitle("Register");
-        stage.setScene(scene);
-        stage.show(); */
-
-
     }
 
 
