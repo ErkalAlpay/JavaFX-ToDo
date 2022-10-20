@@ -8,10 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.PieChart;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
@@ -36,9 +33,7 @@ public class ToDoController implements Initializable {
 
     @FXML
     void secilenToDoSil(ActionEvent event) {
-
     }
-
     @FXML
     void toDoEkle(ActionEvent event) throws SQLException {
 
@@ -46,15 +41,12 @@ public class ToDoController implements Initializable {
         todo.setTodo(sistemeGirilecekToDo.getText());
         todoList.add(todo);
         DataAccess.getInstance().saveTodo(todo);
-
     }
-
     ObservableList<ToDo> todoList = FXCollections.observableArrayList();
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-   // toDoColumn.setCellFactory(new PropertyValueFactory<ToDo, String>());
-
+    toDoColumn.setCellValueFactory(new PropertyValueFactory<ToDo, String>("todo"));
+    myTable.setItems(todoList);
 
 
 
