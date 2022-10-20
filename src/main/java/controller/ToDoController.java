@@ -13,6 +13,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class ToDoController implements Initializable {
@@ -42,18 +43,19 @@ public class ToDoController implements Initializable {
         todoList.add(todo);
         DataAccess.getInstance().saveTodo(todo);
     }
+
+
     ObservableList<ToDo> todoList = FXCollections.observableArrayList();
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
     toDoColumn.setCellValueFactory(new PropertyValueFactory<ToDo, String>("todo"));
     myTable.setItems(todoList);
-
-
-
-
-
-
-
+        try {
+            ArrayList<ToDo> todoListDb = DataAccess.getInstance().getToDoList();
+            todoList.addAll(todoListDb);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 }
