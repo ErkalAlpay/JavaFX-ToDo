@@ -1,12 +1,14 @@
 package com.example.loginscreen4;
 
+import javafx.scene.control.CheckBox;
+
 import java.util.ArrayList;
 
 public class ToDo {
 
     private int id;
     private String todo;
-    private boolean isCompleted;
+    private Boolean isCompleted;
     private int user_id;
 
 

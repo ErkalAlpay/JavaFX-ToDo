@@ -17,6 +17,7 @@ public class SceneController {
     private Scene scene;
     private Parent root;
 
+
     public void switchToLoginScene() throws IOException {
         FXMLLoader root = new FXMLLoader(Main.class.getResource("login.fxml"));
         Scene scene = new Scene(root.load());

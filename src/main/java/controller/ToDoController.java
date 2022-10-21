@@ -19,7 +19,6 @@ import java.util.ResourceBundle;
 public class ToDoController implements Initializable {
 
 
-
     @FXML
     private TableView<ToDo> myTable;
 
@@ -33,8 +32,13 @@ public class ToDoController implements Initializable {
     private TextField sistemeGirilecekToDo;
 
     @FXML
-    void secilenToDoSil(ActionEvent event) {
+    void secilenToDoSil(ActionEvent event) throws SQLException {
+        ToDo secilmisToDo = myTable.getSelectionModel().getSelectedItem();
+        System.out.println(secilmisToDo.getTodo() + "  " +secilmisToDo.getId());
+        myTable.getItems().removeAll(myTable.getSelectionModel().getSelectedItem());
+        DataAccess.getInstance().deleteTodo(secilmisToDo);
     }
+
     @FXML
     void toDoEkle(ActionEvent event) throws SQLException {
 
@@ -42,14 +46,17 @@ public class ToDoController implements Initializable {
         todo.setTodo(sistemeGirilecekToDo.getText());
         todoList.add(todo);
         DataAccess.getInstance().saveTodo(todo);
+        //CheckBox checkBox = new CheckBox();
     }
 
 
     ObservableList<ToDo> todoList = FXCollections.observableArrayList();
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-    toDoColumn.setCellValueFactory(new PropertyValueFactory<ToDo, String>("todo"));
-    myTable.setItems(todoList);
+        //completedColumn.setCellValueFactory(new PropertyValueFactory<ToDo, Boolean>("isCompleted"));
+        toDoColumn.setCellValueFactory(new PropertyValueFactory<ToDo, String>("todo"));
+        myTable.setItems(todoList);
         try {
             ArrayList<ToDo> todoListDb = DataAccess.getInstance().getToDoList();
             todoList.addAll(todoListDb);

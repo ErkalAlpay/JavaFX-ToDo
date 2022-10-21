@@ -65,6 +65,11 @@ public class DataAccess {
         addTodo(todo);
     }
 
+    public void deleteTodo(ToDo todo) throws SQLException {
+        String sql = "delete from todo where id ='"+todo.getId()+"'";
+        statement.executeUpdate(sql);
+    }
+
     public void saveUser(User user) throws SQLException {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         addUser(user);
