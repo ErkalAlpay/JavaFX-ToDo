@@ -13,7 +13,7 @@ public class MailService {
     public  MailService() {
         mailSender.setHost("smtp.gmail.com");
         mailSender.setPort(587);
-        mailSender.setUsername("erkaljavamailsender@gmail.com");
+        mailSender.setUsername("*************@gmail.com");
         mailSender.setPassword("**************");
         // ------------------------------------------------------
         props.put("mail.transport.protocol", "smtp");
