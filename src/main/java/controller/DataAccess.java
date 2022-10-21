@@ -2,6 +2,7 @@ package controller;
 
 import com.example.loginscreen4.ToDo;
 import com.example.loginscreen4.User;
+import javafx.scene.control.CheckBox;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.sql.*;
@@ -11,8 +12,6 @@ public class DataAccess {
 
     private static DataAccess instance;
     private static User loginYapmisUser;
-
-
 
 
     public static DataAccess getInstance() {
@@ -25,6 +24,8 @@ public class DataAccess {
     }
 
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+    private final MailService mailService = new MailService();
     private final String dataSource = "jdbc:postgresql://localhost:5432/postgres";
     private final String dataUsername = "postgres";
     private final String dataPassword = "writemaster";
@@ -54,68 +55,87 @@ public class DataAccess {
 
     }
 
-    private void addTodo(ToDo todo) throws SQLException{
-        String sql = "insert into todo (todo, userid) values ('"+todo.getTodo()+"','"+todo.getUser_id()+"')";
+    private void addTodo(ToDo todo) throws SQLException {
+        String sql = "insert into todo (todo, userid) values ('" + todo.getTodo() + "','" + todo.getUser_id() + "')";
         statement.addBatch(sql);
         statement.executeBatch();
     }
 
-    public void saveTodo(ToDo todo) throws SQLException{
+    public void saveTodo(ToDo todo) throws SQLException {
         todo.setUser_id(loginYapmisUser.getId());
         addTodo(todo);
     }
 
     public void deleteTodo(ToDo todo) throws SQLException {
-        String sql = "delete from todo where id ='"+todo.getId()+"'";
+        String sql = "delete from todo where id ='" + todo.getId() + "'";
         statement.executeUpdate(sql);
     }
 
     public void saveUser(User user) throws SQLException {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        mailService.sendEmail(user.getEmail(), "Register", "Başarıyla kayıt  :) ");
         addUser(user);
-        //JavaMailSender.mailSender(user.getEmail());
+
 
     }
 
     // email = saiddemir  şifre = saiddemir
     public void login(User user) throws Exception {
         User dbUser = getUserByEmail(user.getEmail());
-        if (dbUser == null || !passwordEncoder.matches(user.getPassword(), dbUser.getPassword())){
+        if (dbUser == null || !passwordEncoder.matches(user.getPassword(), dbUser.getPassword())) {
             throw new Exception("Kullanıcı adı veya şifre bulunamadı");
         }
-    loginYapmisUser = dbUser;
+        loginYapmisUser = dbUser;
     }
 
     private User getUserByEmail(String email) throws SQLException {
-        String sql = "select * from users where email = '"+email+"' ";
+        String sql = "select * from users where email = '" + email + "' ";
         ResultSet sonuc = statement.executeQuery(sql);
 
-        if (sonuc.next()){
+        if (sonuc.next()) {
             User user = new User();
             user.setEmail(sonuc.getString("email"));
             user.setPassword(sonuc.getString("password"));
             user.setId(sonuc.getInt("id"));
             return user;
-        } return null;
+        }
+        return null;
     }
-     private ArrayList<ToDo> getDataBaseTodoByUserId(int userId) throws SQLException {
-        String sql = "select * from todo where userid = '"+userId+"'";
+
+    private ArrayList<ToDo> getDataBaseTodoByUserId(int userId) throws SQLException {
+        String sql = "select * from todo where userid = '" + userId + "'";
         ResultSet sonuc = statement.executeQuery(sql);
         ArrayList<ToDo> dbToDoList = new ArrayList<>();
-        while(sonuc.next()){
+        while (sonuc.next()) {
+
+            CheckBox checkBox = new CheckBox();
             ToDo todo = new ToDo();
             todo.setTodo(sonuc.getString("todo"));
             todo.setCompleted(sonuc.getBoolean("isCompleted"));
-            todo.setId(sonuc.getInt("id"));
+            todo.setIsCheckBox(checkBox);
             todo.setUser_id(sonuc.getInt("userid"));
+            todo.setId(sonuc.getInt("id"));
+            checkBox.setSelected(todo.getCompleted());
+            checkBox.setOnAction(event -> updateToDo(checkBox.isSelected(), todo.getId()));
             dbToDoList.add(todo);
-        }return dbToDoList;
+        }
+        return dbToDoList;
 
-     }
+    }
 
-     public ArrayList<ToDo> getToDoList() throws SQLException {
-       return getDataBaseTodoByUserId(loginYapmisUser.getId());
-     }
+    private void updateToDo(boolean a, int id){
+        try {
+            String sql = "update todo set iscompleted = " + a + "  where id = " + id + "";
+            statement.executeUpdate(sql);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public ArrayList<ToDo> getToDoList() throws SQLException {
+        return getDataBaseTodoByUserId(loginYapmisUser.getId());
+    }
+
 
 }
 

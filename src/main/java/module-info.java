@@ -4,7 +4,8 @@ module com.example.loginscreen4 {
     requires java.sql;
     requires spring.security.crypto;
     requires spring.boot.starter.mail;
-
+    requires spring.context;
+    requires spring.context.support;
 
 
     opens com.example.loginscreen4 to javafx.fxml;

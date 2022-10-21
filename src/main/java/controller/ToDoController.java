@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
@@ -23,7 +24,7 @@ public class ToDoController implements Initializable {
     private TableView<ToDo> myTable;
 
     @FXML
-    private TableColumn<ToDo, Boolean> completedColumn;
+    private TableColumn<ToDo, CheckBox> completedColumn;
 
     @FXML
     private TableColumn<ToDo, String> toDoColumn;
@@ -31,13 +32,16 @@ public class ToDoController implements Initializable {
     @FXML
     private TextField sistemeGirilecekToDo;
 
+
     @FXML
     void secilenToDoSil(ActionEvent event) throws SQLException {
         ToDo secilmisToDo = myTable.getSelectionModel().getSelectedItem();
-        System.out.println(secilmisToDo.getTodo() + "  " +secilmisToDo.getId());
         myTable.getItems().removeAll(myTable.getSelectionModel().getSelectedItem());
         DataAccess.getInstance().deleteTodo(secilmisToDo);
     }
+
+
+
 
     @FXML
     void toDoEkle(ActionEvent event) throws SQLException {
@@ -46,7 +50,6 @@ public class ToDoController implements Initializable {
         todo.setTodo(sistemeGirilecekToDo.getText());
         todoList.add(todo);
         DataAccess.getInstance().saveTodo(todo);
-        //CheckBox checkBox = new CheckBox();
     }
 
 
@@ -54,7 +57,7 @@ public class ToDoController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //completedColumn.setCellValueFactory(new PropertyValueFactory<ToDo, Boolean>("isCompleted"));
+        completedColumn.setCellValueFactory(new PropertyValueFactory<ToDo, CheckBox>("isCheckBox"));
         toDoColumn.setCellValueFactory(new PropertyValueFactory<ToDo, String>("todo"));
         myTable.setItems(todoList);
         try {
